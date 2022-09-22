@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+ <%- include ('../partials/head') %>
+
+
+<body style="min-height: 100vh;
+margin: 0;
+display: flex;
+flex-direction: column;">
+
+    <%- include('../partials/header'); %>
+
+
+<%- include('../modal/modal'); %>
+      <div class="container pt-5 mb-5 text-center" >
+    <h2>Crud Estudiantes</h2>
+    
+    <br />
+    <br />
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" onclick="limpiarForm();"  data-bs-placement="right" title="Agregar Estudiante Nuevo">
+      Nuevo Estudiante
+    </button>
+    <br />
+    <br />
+    <table class="table table-dark table-hover pb-5 text-center" >
+      <thead>
+        <tr>
+          <th>Carne</th>
+          <th>Nombres</th>
+          <th>Apellidos</th>
+          <th>Direccion</th>
+          <th>Telefono</th>
+          <th>Genero</th>
+          <th>Email</th>
+          <th>Fecha de Nacimiento</th>
+        </tr>
+      </thead>
+      <tbody id="tbl_estudiantes" style="cursor: pointer;">
+        <% resultado.forEach((estudiante)=>{ %>
+          <tr data-id_estudiante="<%=estudiante.id_estudiante%>">
+            <td><%= estudiante.carne %></td>
+            <td><%= estudiante.nombres %></td>
+            <td><%= estudiante.apellidos %></td>
+            <td><%= estudiante.direccion %></td>
+            <td><%= estudiante.telefono %></td>
+            <%if(estudiante.genero==1){%>
+              <td>Femenino</td>
+              <%}else{%>
+                <td>Masculino</td>
+            <%}%>
+            <td><%= estudiante.email %></td>
+            <td><%= estudiante.fecha_nacimiento %></td>
+          </tr>
+          <% }); %>
+          
+      </tbody>
+    </table>
+  </div>
+
+  
+    <%- include('../partials/footer'); %>
+
+  <script type="text/javascript">
+    $('#tbl_estudiantes').on('click','tr td',(e)=>{
+      var target;
+      var id_estudiante,carnet,nombres,apellidos,direccion,telefono,genero,email,fecha_nacimiento;
+      target = $(e.target);
+      id_estudiante=target.parent().data('id_estudiante');
+      carnet=target.parent("tr").find("td").eq(0).html();
+      nombres=target.parent("tr").find("td").eq(1).html();
+      apellidos=target.parent("tr").find("td").eq(2).html();
+      direccion=target.parent("tr").find("td").eq(3).html();
+      telefono=target.parent("tr").find("td").eq(4).html();
+      genero=target.parent("tr").find("td").eq(5).html();
+      email=target.parent("tr").find("td").eq(6).html();
+      fecha_nacimiento=target.parent("tr").find("td").eq(7).html();
+      $('#txt_id').val(id_estudiante);
+      $('#txt_carne').val(carnet);
+      $('#txt_nombres').val(nombres);
+      $('#txt_apellidos').val(apellidos);
+      $('#txt_direccion').val(direccion);
+      $('#txt_telefono').val(telefono);
+      $('#txt_email').val(email);
+      if(genero=="Masculino"){
+        $('#drop_genero').val(0);
+      }else{
+        $('#drop_genero').val(1);
+      }
+      $('#txt_fecha_nacimiento').val(fecha_nacimiento);
+      $('#btn_agregar').hide();
+      $('#btn_modificar').show();
+      $('#btn_eliminar').show();
+      $('#myModal').modal('show');
+
+    });
+  </script>
+  <script>
+    $(document).ready(() => {
+      $("#btn_modificar").hide();
+      $("#btn_eliminar").hide();
+      $("#btn_agregar").show();
+    });
+  </script>
+  <script>
+    function limpiarForm(){
+      $('#txt_id').val(0);
+      $("#txt_carne").val("");
+      $("#txt_nombres").val("");
+      $("#txt_apellidos").val("");
+      $("#txt_direccion").val("");
+      $("#txt_telefono").val("");
+      $("#txt_email").val("");
+      $("#drop_genero").val("Seleccione el tipo de sangre");
+      $("#txt_fecha_nacimiento").val("");
+      $("#btn_agregar").show();
+      $("#btn_modificar").hide();
+      $("#btn_eliminar").hide();
+      
+    }
+  </script>
+  <script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+    </script>
+</body>
+
+</html>
